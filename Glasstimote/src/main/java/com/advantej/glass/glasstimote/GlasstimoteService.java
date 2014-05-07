@@ -3,6 +3,7 @@ package com.advantej.glass.glasstimote;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.widget.RemoteViews;
@@ -24,6 +25,15 @@ public class GlasstimoteService extends Service {
 
     private BeaconManager mBeaconManager;
     private static final Region ALL_ESTIMOTE_BEACONS_REGION = new Region("rid", null, null, null);
+    private List<Beacon> mBeacons = null;
+
+    private final IBinder mBinder = new MyBinder();
+
+    public class MyBinder extends Binder {
+        public GlasstimoteService getService() {
+            return GlasstimoteService.this;
+        }
+    }
 
     public GlasstimoteService() {
     }
@@ -84,6 +94,9 @@ public class GlasstimoteService extends Service {
     private BeaconManager.RangingListener mRangingListener = new BeaconManager.RangingListener() {
         @Override
         public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
+
+            mBeacons = beacons;
+
             int count = beacons.size();
             if (count > 0) {
                 publishOrUpdateLiveCard(beacons.size());
@@ -134,6 +147,10 @@ public class GlasstimoteService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
+    }
+
+    public List<Beacon> getBeacons() {
+        return mBeacons;
     }
 }

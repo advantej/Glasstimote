@@ -17,6 +17,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
 
+        <activity android:name=".BeaconListActivity"/>
+
         <activity android:name="com.advantej.glass.glasstimote.LiveCardMenuActivity" />
 
         <service

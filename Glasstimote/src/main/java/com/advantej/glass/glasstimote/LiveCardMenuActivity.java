@@ -32,6 +32,10 @@ public class LiveCardMenuActivity extends Activity
             case R.id.menu_lc_stop:
                 stopService(new Intent(this, GlasstimoteService.class));
                 return true;
+
+            case R.id.menu_lc_details:
+                startActivity(new Intent(this, BeaconListActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
